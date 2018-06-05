@@ -1,0 +1,16 @@
+{
+  "name": "learning-english-site",
+  "version": "1.0.0",
+  "description": "A site for learning english.",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm server.js"
+  },
+  "author": "Brandon Cardoso",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {}
+}
