@@ -10,7 +10,8 @@
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mariasql": "^0.2.6"
   },
   "devDependencies": {}
 }
