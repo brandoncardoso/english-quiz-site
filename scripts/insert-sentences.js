@@ -20,7 +20,8 @@ const Sentence = sequelize.define('sentence', {
         type: Sequelize.TEXT(500)
     }
 }, {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true
 })
 
 sequelize

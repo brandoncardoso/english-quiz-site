@@ -15,11 +15,10 @@ const sequelize = new Sequelize('language', 'root', '', {
 })
 
 const Sentence = sequelize.define('sentence', {
-    sentence: {
-        type: Sequelize.TEXT(500)
-    }
+    sentence: Sequelize.TEXT(500)
 }, {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true
 })
 
 sequelize
