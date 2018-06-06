@@ -1,20 +1,39 @@
-var Client = require('mariasql')
-var express = require('express')
-var app = express()
+const Sequelize = require('sequelize')
+const express = require('express')
+const app = express()
 
-var client = new Client({
+const sequelize = new Sequelize('language', 'root', '', {
     host: '127.0.0.1',
-    user: 'root',
-    password: ''
+    dialect: 'mysql',
+    operatorsAliases: false,
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
 })
 
+const Sentence = sequelize.define('sentence', {
+    sentence: {
+        type: Sequelize.TEXT(500)
+    }
+}, {
+    timestamps: false
+})
+
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.')
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err)
+    })
+
 app.get('/', function (req, res) {
-    //res.sendFile('home.html', {'root': __dirname + '/views'})
-    client.query('SELECT * FROM language.sentences', null, { useArray: true }, function (err, rows) {
-        if (err) {
-            throw err
-        }
-        res.send(rows)
+    Sentence.findAll().then(sentences => {
+        res.send(sentences)
     })
 })
 

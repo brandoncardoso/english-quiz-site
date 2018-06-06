@@ -1,30 +1,47 @@
-var fs = require('fs')
-var readline = require('readline')
-var stream = require('stream')
-var Client = require('mariasql')
+const Sequelize = require('sequelize')
+const fs = require('fs')
+const readline = require('readline')
+const stream = require('stream')
 
-var client = new Client({
+const sequelize = new Sequelize('language', 'root', '', {
     host: '127.0.0.1',
-    user: 'root',
-    password: ''
+    dialect: 'mysql',
+    operatorsAliases: false,
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
 })
 
-var instream = fs.createReadStream (process.argv[2])
-var outstream = new stream()
-var rl = readline.createInterface(instream, outstream)
+const Sentence = sequelize.define('sentence', {
+    sentence: {
+        type: Sequelize.TEXT(500)
+    }
+}, {
+    timestamps: false
+})
 
-var prep = client.prepare('INSERT INTO language.sentences (sentence) VALUES (:sentence)')
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.')
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err)
+    })
+
+const instream = fs.createReadStream (process.argv[2])
+const outstream = new stream()
+const rl = readline.createInterface(instream, outstream)
 
 rl.on('line', function (line) {
-    client.query(prep({sentence: line}), function (err, rows) {
-        if (err) {
-            throw err
-        }
-    })
+    Sentence.create({ sentence: line })
 })
 
 rl.on('close', function (line) {
-    client.end()
+    sequelize.close()
     console.log('done')
 })
 
