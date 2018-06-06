@@ -10,10 +10,11 @@ var client = new Client({
 
 app.get('/', function (req, res) {
     //res.sendFile('home.html', {'root': __dirname + '/views'})
-    client.query('SHOW DATABASES', function (err, rows) {
+    client.query('SELECT * FROM language.sentences', null, { useArray: true }, function (err, rows) {
         if (err) {
             throw err
         }
+        res.send(rows)
     })
 })
 
