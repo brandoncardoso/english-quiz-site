@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize')
-
 const config = require('./config')
 
 const dbs = module.exports
@@ -13,6 +12,10 @@ dbs.language = new Sequelize('language', config.db.user, config.db.pw, {
         min: 0,
         acquire: 30000,
         idle: 10000
+    },
+    define: {
+        timestamps: false,
+        freezeTableName: true
     }
 })
 
@@ -25,6 +28,10 @@ dbs.question = new Sequelize('question', config.db.user, config.db.pw, {
         min: 0,
         acquire: 30000,
         idle: 10000
+    },
+    define: {
+        timestamps: false,
+        freezeTableName: true
     }
 })
 
