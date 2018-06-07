@@ -2,9 +2,9 @@
   "name": "learning-english-site",
   "version": "1.0.0",
   "description": "A site for learning english.",
-  "main": "server.js",
+  "main": "app/app.js",
   "scripts": {
-    "start": "npm server.js"
+    "start": "npm app/app.js"
   },
   "author": "Brandon Cardoso",
   "private": true,
