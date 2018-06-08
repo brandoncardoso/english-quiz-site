@@ -1,12 +1,13 @@
-const Sentence = require('../models/Sentence')
-const FillInTheBlank = require('../models/FillInTheBlank')
-
 module.exports = function(app) {
+    // set views directory
+    app.set('views', 'public/views')
+
+    // favicon
     app.get('/favicon.ico', (req, res) => res.status(204))
 
-    app.get('/:id', function (req, res) {
-        Sentence.findById(req.params.id)
-        .then((sentence, err) => res.send(sentence))
+    // routes
+    app.get('/', function (req, res) {
+        res.render('home.ejs')
     })
 }
 
