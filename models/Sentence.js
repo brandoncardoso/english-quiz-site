@@ -5,7 +5,8 @@ const Sentence = exports.Sentence = dbs.language.define('sentence', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false
     },
     sentence: {
         type: Sequelize.TEXT,

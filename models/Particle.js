@@ -5,10 +5,11 @@ const Particle = exports.Particle = dbs.language.define('particle', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false
     },
     particle: {
-        type: Sequelize.TEXT,
+        type: Sequelize.TEXT('tiny'),
         allowNull: false
     }
 

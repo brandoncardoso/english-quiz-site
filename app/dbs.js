@@ -19,24 +19,7 @@ dbs.language = new Sequelize('language', config.db.user, config.db.pw, {
     }
 })
 
-dbs.question = new Sequelize('question', config.db.user, config.db.pw, {
-    host: config.db.host,
-    dialect: 'mysql',
-    operatorsAliases: false,
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    },
-    define: {
-        timestamps: false,
-        freezeTableName: true
-    }
-})
-
 authenticate(dbs.language)
-authenticate(dbs.question)
 
 function authenticate(db) {
     db

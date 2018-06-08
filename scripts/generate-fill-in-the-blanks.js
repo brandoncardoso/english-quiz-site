@@ -1,37 +1,9 @@
-const Sequelize = require('sequelize')
-const Op = Sequelize.Op
+const Op = require('sequelize').Op
 const _ = require('lodash')
 
-const sequelizeOpts = {
-    host: '127.0.0.1',
-    dialect: 'mysql',
-    operatorsAliases: false,
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    },
-    define: {
-        timestamps: false,
-        freezeTableName: true
-    }
-}
-
-const languageDb = new Sequelize('language', 'root', '', sequelizeOpts)
-const questionDb = new Sequelize('question', 'root', '', sequelizeOpts)
-
-const Sentence = languageDb.define('sentence', { 
-    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    sentence: Sequelize.TEXT(500) })
-const Particle = languageDb.define('particle', {
-    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    particle: Sequelize.TEXT('tiny') })
-const Question = questionDb.define('fillintheblank', {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
-    sentenceId: { type: Sequelize.INTEGER, references: 'language.sentence', referencesKey: 'id' },
-    answerId: { type: Sequelize.INTEGER, references: 'language.particle', referencesKey: 'id' },
-    index: Sequelize.INTEGER })
+const Particle = require('../models/Particle').Particle
+const Sentence = require('../models/Sentence').Sentence
+const FillInTheBlank = require('../models/FillInTheBlank').FillInTheBlank
 
 var targetWord = process.argv[2].toLowerCase()
 
@@ -39,18 +11,10 @@ if (!targetWord) {
     throw new Error('Invalid target word')
 }
 
-languageDb
-    .authenticate()
-    .then(() => {
-        console.log('Connection to language database has been established successfully.')
-        return questionDb.authenticate()
-    })
-    .then(() => {
-        console.log('Connection to question database has been established successfully.')
-        return Particle.findOrCreate({
-            where: { particle: targetWord },
-            raw: true,
-        })
+Particle
+    .findOrCreate({
+        where: { particle: targetWord },
+        raw: true,
     })
     .spread((particle, created) => {
         return [particle, Sentence.findAll({
@@ -64,7 +28,7 @@ languageDb
             const words = _.split(sentence.sentence, ' ')
             _.each(words, function(word, i) {
                 if (_.isEqual(words[i].toLowerCase(), particle.particle)) {
-                    promises.push(Question.findOrCreate({
+                    promises.push(FillInTheBlank.findOrCreate({
                         where: { sentenceId: sentence.id, answerId: particle.id, index: i },
                         raw: true,
                     }))
@@ -73,10 +37,8 @@ languageDb
         })
         return Promise.all(promises)
     })
-    .then(questions => {
-        console.log('done.', questions.length)
-        languageDb.close()
-        questionDb.close()
+    .then(fillInTheBlanks => {
+        console.log('done.', fillInTheBlanks.length)
     })
     .catch(err => {
         console.error(err)
