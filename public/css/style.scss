@@ -2,8 +2,12 @@
 $primary: red;
 /*******************/
 
-button.is-quiz-button {
+a.is-quiz-button {
     height: 6em;
+
+    & + a.is-quiz-button {
+        margin-top: 1em;
+    }
 }
 
 @import "../../node_modules/bulma/bulma.sass";

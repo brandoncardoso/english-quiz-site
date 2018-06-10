@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
     <% include partials/head %>
-    <body class="is-fullheight">
+    <body>
         <% include partials/nav %>
         <div class="section">
             <div class="container">
                 <h1 class="title">Quizzes</h1>
-                <%= quizList %>
                 <div class="columns">
+                    <% quizList.forEach(function (column) { %>
                     <div class="column">
-                        <button class="button is-quiz-button is-info is-large is-fullwidth">
-                            The, A, &amp; An
-                        </button>
+                        <% column.forEach(function (quiz) { %>
+                        <a class="button is-quiz-button is-info is-large is-fullwidth"
+                            href="/quizzes/fillintheblank/1?<%= quiz.params %>">
+                            <%= quiz.name %>
+                        </a>
+                        <% }) %>
                     </div>
-                    <div class="column">
-                        <button class="button is-quiz-button is-info is-large is-fullwidth">
-                            On, At, &amp; In
-                        </button>
-                    </div>
-                    <div class="column">
-                        <button class="button is-quiz-button is-info is-large is-fullwidth">
-                            And, &amp; But
-                        </button>
-                    </div>
+                    <% }) %>
                 </div>
             </div>
         </div>

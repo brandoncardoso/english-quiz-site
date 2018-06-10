@@ -15,6 +15,7 @@
     "express": "^4.16.3",
     "lodash": "^4.17.10",
     "mysql2": "^1.5.3",
+    "querystring": "^0.2.0",
     "sequelize": "^4.37.10"
   },
   "devDependencies": {
