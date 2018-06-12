@@ -35,8 +35,25 @@ exports.index = function (req, res) {
 
 exports.getFillInTheBlank = function (req, res) {
     const particles = _.get(req, 'query.p')
-    FillInTheBlank.getSentenceWithParticles(particles).then(sentenceId => {
-        res.redirect(req.baseUrl  + '/fillintheblank/' + sentenceId + '?' + qs.stringify({ p: particles }))
+
+    // there needs to be at least two particles for a quiz/fillintheblank to be worth doing
+    if (particles.constructor !== Array || particles.length < 2) {
+        res.render('quizzes', {
+            quizList: quizList,
+            notEnoughParticles: true
+        })
+    }
+
+    FillInTheBlank.getRandomByParticles(particles).then(fillintheblank => {
+        if (fillintheblank) {
+            res.redirect(req.baseUrl  + '/fillintheblank/' + fillintheblank.sentenceId + '?' + qs.stringify({ p: particles }))
+        } else {
+            res.render('quizzes', {
+                quizList: quizList,
+                invalidQuiz: true,
+                invalidParticles: particles
+            })
+        }
     })
 }
 

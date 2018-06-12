@@ -6,6 +6,18 @@
         <div class="section">
             <div class="container">
                 <h1 class="title">Quizzes</h1>
+                <% if (typeof notEnoughParticles != 'undefined' && notEnoughParticles) { %>
+                <div class="notification is-warning is-centered">
+                    You need to pick at least 2 particles!
+                </div>
+                <% } %>
+                <% if (typeof invalidQuiz != 'undefined' && invalidQuiz) { %>
+                <div class="notification is-warning is-centered">
+                    Sorry, there aren't any quizzes for
+                    "<%- invalidParticles.slice(0, -1).join(', ') + ', & ' + invalidParticles.slice(-1) %>".
+                    Try a different one!
+                </div>
+                <% } %>
                 <div class="columns">
                     <% quizList.forEach(function (column) { %>
                     <div class="column">
