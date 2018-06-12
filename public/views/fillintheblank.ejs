@@ -5,7 +5,12 @@
         <% include partials/nav %>
         <div class="section">
             <div class="container">
-                <%= sentence.sentence %>
+                <%= question.sentence %>
+                <br/>
+                <br/>
+                <% question.blanks.forEach(function(blank) { %>
+                <%= blank.index +  ' ' + blank['answer.particle'] %><br/>
+                <% }) %>
             </div>
         </div>
     </body>

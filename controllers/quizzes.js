@@ -59,14 +59,11 @@ exports.getFillInTheBlank = function (req, res) {
 
 exports.fillintheblank = function (req, res) {
     const sentenceId = _.get(req, 'params.sentenceId')
+    const particles = _.get(req, 'query.p')
 
-    Sentence.findById(sentenceId).then(sentence => {
-        return [sentence,
-            FillInTheBlank.getBySentenceId(sentenceId)]
-    }).spread((sentence, fillintheblanks) => {
+    FillInTheBlank.getFillInTheBlankQuestion(sentenceId, particles).then(question => {
         res.render('fillintheblank', {
-            sentence: sentence,
-            fillintheblanks: fillintheblanks
+            question: question
         })
     })
 }
