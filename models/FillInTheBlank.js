@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const dbs = require('../app/dbs')
+const Op = Sequelize.Op
 
 const Sentence = require('./Sentence').Sentence
 const Particle = require('./Particle').Particle
@@ -25,3 +26,18 @@ FillInTheBlank.belongsTo(Particle, { as: 'answer', onDelete: 'CASCADE', hooks: t
 FillInTheBlank.sync().then(() => console.log('FillInTheBlank table synced'))
 
 // functions
+exports.getSentenceWithParticles = function (particles) {
+    return FillInTheBlank.findOne({
+        include: [{
+            model: Particle,
+            as: 'answer',
+            where: { particle: { [Op.in]: particles } }
+        }],
+        order: [
+            Sequelize.fn('RAND')
+        ],
+        raw: true
+    }).then(fillintheblank => {
+        return fillintheblank.sentenceId
+    })
+}

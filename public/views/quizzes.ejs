@@ -11,7 +11,7 @@
                     <div class="column">
                         <% column.forEach(function (quiz) { %>
                         <a class="button is-quiz-button is-info is-large is-fullwidth"
-                            href="/quizzes/fillintheblank/1?<%= quiz.params %>">
+                            href="/quizzes/fillintheblank?<%= quiz.params %>">
                             <%= quiz.name %>
                         </a>
                         <% }) %>
