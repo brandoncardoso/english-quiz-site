@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const qs = require('querystring')
 
+const Sentence = require('../models/Sentence')
 const FillInTheBlank = require('../models/FillInTheBlank')
 
 const numColumns = 3
@@ -40,7 +41,15 @@ exports.getFillInTheBlank = function (req, res) {
 }
 
 exports.fillintheblank = function (req, res) {
-    res.render('fillintheblank', {
-        particles: _.get(req, 'query.p')
+    const sentenceId = _.get(req, 'params.sentenceId')
+
+    Sentence.findById(sentenceId).then(sentence => {
+        return [sentence,
+            FillInTheBlank.getBySentenceId(sentenceId)]
+    }).spread((sentence, fillintheblanks) => {
+        res.render('fillintheblank', {
+            sentence: sentence,
+            fillintheblanks: fillintheblanks
+        })
     })
 }

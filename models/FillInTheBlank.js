@@ -41,3 +41,10 @@ exports.getSentenceWithParticles = function (particles) {
         return fillintheblank.sentenceId
     })
 }
+
+exports.getBySentenceId = function (sentenceId) {
+    return FillInTheBlank.findAll({
+        where: { sentenceId: { [Op.eq]: sentenceId } },
+        raw: true
+    })
+}
