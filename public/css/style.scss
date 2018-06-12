@@ -1,6 +1,10 @@
 /* Bulma overrides */
-$primary: red;
+@import "../../node_modules/bulma/bulma.sass";
 /*******************/
+
+/* Variables */
+$question-blank-num-size: 1.25em;
+/*************/
 
 a.is-quiz-button {
     height: 6em;
@@ -10,4 +14,35 @@ a.is-quiz-button {
     }
 }
 
-@import "../../node_modules/bulma/bulma.sass";
+section.question {
+    counter-reset: question-blank-counter;
+}
+
+
+span.word {
+    font-size: 1.5em;
+
+    &.word--blank {
+        width: 2em;
+        height: 1em;
+        display: inline-block;
+        border-bottom: 0.05em solid black;
+        counter-increment: question-blank-counter +1;
+
+        &::before {
+            content: counter(question-blank-counter);
+            background: $success;
+            width: $question-blank-num-size;
+            height: $question-blank-num-size;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            left: 50%;
+            margin-left: -1 * ($question-blank-num-size / 2);
+            border-radius: 50%;
+            border: 0.05em solid $light;
+        }
+    }
+}

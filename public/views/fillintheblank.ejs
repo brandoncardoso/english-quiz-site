@@ -3,13 +3,17 @@
     <% include partials/head %>
     <body>
         <% include partials/nav %>
-        <div class="section">
+        <div class="section question">
             <div class="container">
-                <%= question.sentence %>
+                <% question.sentence.forEach(function(word) { %>
+                <span class="word <%= word.isBlank ? 'word--blank' : '' %>">
+                <%= word.word %>
+                </span>
+                <% }) %>
                 <br/>
                 <br/>
-                <% question.blanks.forEach(function(blank) { %>
-                <%= blank.index +  ' ' + blank['answer.particle'] %><br/>
+                <% question.blanks.forEach(function(blank, index) { %>
+                <%= index %> - <%= blank.index +  ' ' + blank['answer.particle'] %><br/>
                 <% }) %>
             </div>
         </div>

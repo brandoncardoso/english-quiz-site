@@ -62,6 +62,7 @@ exports.getFillInTheBlankQuestion = function (sentenceId, particles) {
             where: { particle: { [Op.in]: particles } }
         }],
         attributes: [ 'index' ],
+        order: [ 'index' ],
         raw: true
     }).then(fillintheblanks => {
         return formatFillInTheBlankQuestion(fillintheblanks)
@@ -69,11 +70,17 @@ exports.getFillInTheBlankQuestion = function (sentenceId, particles) {
 }
 
 function formatFillInTheBlankQuestion(fillintheblanks) {
-    return {
-        sentence: _.get(fillintheblanks, [0, 'sentence.sentence']),
-        blanks: _.map(fillintheblanks, fillintheblank => {
-            delete fillintheblank['sentence.sentence']
-            return fillintheblank
+    let sentence = _(fillintheblanks)
+        .get([0, 'sentence.sentence'])
+        .split(' ')
+        .map(word => {
+            return { word: word }
         })
-    }
+
+    _.each(fillintheblanks, blank => {
+        delete sentence[blank.index].word
+        sentence[blank.index].isBlank = true
+    })
+
+    return { sentence: sentence, blanks: fillintheblanks }
 }
