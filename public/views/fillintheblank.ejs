@@ -4,19 +4,30 @@
     <body>
         <% include partials/nav %>
         <div class="section question">
-            <div class="container">
+            <div class="container question__sentence">
                 <% question.sentence.forEach(function(word) { %>
                 <span class="word <%= word.isBlank ? 'word--blank' : '' %>">
-                <%= word.word %>
+                    <%= word.word %>
                 </span>
                 <% }) %>
-                <br/>
-                <br/>
-                <% question.blanks.forEach(function(blank, index) { %>
-                <%= index %> - <%= blank.index +  ' ' + blank['answer.particle'] %><br/>
-                <% }) %>
+            </div>
+            <div class="container question__answers">
+                <form method="post" name="question-blank-answers">
+                    <% question.blanks.forEach(function(blank, index) { %>
+                    <%= index %> - <%= blank.index +  ' ' + blank['answer.particle'] %><br/>
+                    <div class="control">
+                        <% particles.forEach(function(particle) { %>
+                        <label class="radio">
+                            <input type="radio" name="<%= index %>" value="<%= particle %>" <%= previousAnswers[index] === particle ? 'checked' : '' %>>
+                            <%= particle %>
+                        </label>
+                        <% }) %>
+                    </div>
+                    <% }) %>
+                    <input type="submit">
+                </form>
+                <br>
             </div>
         </div>
     </body>
 </html>
-

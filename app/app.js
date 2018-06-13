@@ -1,9 +1,13 @@
 const sassMiddleware = require('node-sass-middleware')
 const path = require('path')
+const bodyParser = require("body-parser")
 const Sequelize = require('sequelize')
 const express = require('express')
 
 const app = express()
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 const config = require('./config')
 const dbs = require('./dbs')

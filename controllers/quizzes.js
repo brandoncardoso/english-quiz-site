@@ -57,13 +57,22 @@ exports.getFillInTheBlank = function (req, res) {
     })
 }
 
-exports.fillintheblank = function (req, res) {
+exports.fillintheblank = function (req, res, next) {
     const sentenceId = _.get(req, 'params.sentenceId')
     const particles = _.get(req, 'query.p')
 
+    const previousAnswers = _.get(res, 'locals.previousAnswers', {})
+
     FillInTheBlank.getFillInTheBlankQuestion(sentenceId, particles).then(question => {
         res.render('fillintheblank', {
-            question: question
+            particles: particles,
+            question: question,
+            previousAnswers: previousAnswers
         })
     })
+}
+
+exports.checkFillInTheBlankAnswer = function (req, res, next) {
+    _.set(res.locals, 'previousAnswers', req.body)
+    next()
 }
