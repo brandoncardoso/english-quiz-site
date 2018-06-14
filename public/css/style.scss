@@ -3,6 +3,8 @@
 /*******************/
 
 /* Variables */
+$success-light: lighten($success, 45%);
+$danger-light: lighten($danger, 33%);
 /*************/
 
 a.is-quiz-button {
@@ -13,16 +15,39 @@ a.is-quiz-button {
     }
 }
 
-.word {
+.question__word {
     font-size: 2em;
     line-height: 2em;
 
-    &.word--blank {
+    &.question__word--blank {
         font-size: 1.25em;
         line-height: 2.5em;
     }
 }
 
-.word.word--blank + .word {
+.question__word.question__word--blank + .question__word {
     margin-left: 0.1em;
+}
+
+.question .select select {
+    font-weight: 500;
+    text-transform: uppercase;
+    color: $black-bis;
+}
+
+.question .select.is-success select {
+    background-color: $success-light;
+}
+.question .select.is-danger select {
+    background-color: $danger-light;
+}
+
+.question__buttons {
+    margin-top: 1em;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.question__buttons button {
+    width: 10em;
 }

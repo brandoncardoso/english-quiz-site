@@ -4,16 +4,16 @@
     <body>
         <% include partials/nav %>
         <div class="section question">
-            <div class="container">
-                <form method="post" name="question-blank-answers">
+            <div class="container question__sentence">
+                <form method="post" id="question-blank-answers">
                     <% question.sentence.forEach(function(word, index) { %>
                     <% if (question.blanks[index]) { %>
-                    <div class="control is-inline-block word word--blank">
-                        <div class="select is-info">
-                            <select name="<%= 'question-answer-' + index %>">
+                    <div class="control is-inline-block question__word question__word--blank">
+                        <div class="select <%= answered ? ( question.blanks[index] === userAnswers['userAnswer-' + index] ? 'is-success' : 'is-danger' ) : 'is-info' %>">
+                            <select required name="<%= 'userAnswer-' + index %>" <%= answered ? 'disabled' : '' %>>
                                 <option selected value></option>
                                 <% particles.forEach(function(particle) { %>
-                                <option value="<%= particle %>" <%- userAnswers['question-answer-' + index] === particle ? 'selected' : '' %>>
+                                <option value="<%= particle %>" <%- userAnswers['userAnswer-' + index] === particle ? 'selected' : '' %>>
                                 <%= particle %>
                                 </option>
                                 <% }) %>
@@ -21,14 +21,25 @@
                         </div>
                     </div>
                     <% } else { %>
-                    <div class="word is-inline">
+                    <div class="question__word is-inline">
                         <%= word %>
                     </div>
                     <% } %>
                     <% }) %>
-                    <input type="submit">
                 </form>
-                <br>
+            </div>
+            <div class="container question__buttons">
+                <% if (answered) { %>
+                <a class="button is-info is-large" href="<%= nextQuestionUrl %>">
+                    Next Question
+                </a>
+                <% } else { %>
+                <div class="control is-info">
+                    <button type="submit" form="question-blank-answers" class="button is-link is-large">
+                        Check
+                    </button>
+                </div>
+                <% } %>
             </div>
         </div>
     </body>

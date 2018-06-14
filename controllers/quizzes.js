@@ -67,7 +67,9 @@ exports.fillintheblank = function (req, res, next) {
         res.render('fillintheblank', {
             particles: particles,
             question: question,
-            userAnswers: userAnswers
+            userAnswers: userAnswers,
+            answered: _.size(userAnswers) > 0,
+            nextQuestionUrl: req.baseUrl + '/fillintheblank?' + qs.stringify({ p: particles })
         })
     })
 }
