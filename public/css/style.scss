@@ -23,10 +23,14 @@ a.is-quiz-button {
         font-size: 1.25em;
         line-height: 2.5em;
     }
-}
+    &.question__word--blank + .question__word {
+        margin-left: 0.1em;
+    }
 
-.question__word.question__word--blank + .question__word {
-    margin-left: 0.1em;
+    &.question__word--answer {
+        color: $success;
+        font-weight: 500;
+    }
 }
 
 .question .select select {
@@ -38,12 +42,13 @@ a.is-quiz-button {
 .question .select.is-success select {
     background-color: $success-light;
 }
+
 .question .select.is-danger select {
     background-color: $danger-light;
 }
 
 .question__buttons {
-    margin-top: 1em;
+    margin-top: 3rem;
     display: flex;
     justify-content: flex-end;
 }

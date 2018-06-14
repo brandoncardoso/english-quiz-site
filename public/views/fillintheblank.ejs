@@ -8,8 +8,9 @@
                 <form method="post" id="question-blank-answers">
                     <% question.sentence.forEach(function(word, index) { %>
                     <% if (question.blanks[index]) { %>
+                    <% const isCorrect = answered && question.blanks[index] === userAnswers['userAnswer-' + index] %>
                     <div class="control is-inline-block question__word question__word--blank">
-                        <div class="select <%= answered ? ( question.blanks[index] === userAnswers['userAnswer-' + index] ? 'is-success' : 'is-danger' ) : 'is-info' %>">
+                        <div class="select <%= answered ? (isCorrect ? 'is-success' : 'is-danger') : 'is-info' %>">
                             <select required name="<%= 'userAnswer-' + index %>" <%= answered ? 'disabled' : '' %>>
                                 <option selected value></option>
                                 <% particles.forEach(function(particle) { %>
@@ -20,6 +21,11 @@
                             </select>
                         </div>
                     </div>
+                    <% if (answered && !isCorrect) { %>
+                    <span class="question__word question__word--answer">
+                        <%= question.blanks[index] %>
+                    </span>
+                    <% } %>
                     <% } else { %>
                     <div class="question__word is-inline">
                         <%= word %>
