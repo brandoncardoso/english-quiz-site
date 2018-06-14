@@ -70,17 +70,16 @@ exports.getFillInTheBlankQuestion = function (sentenceId, particles) {
 }
 
 function formatFillInTheBlankQuestion(fillintheblanks) {
-    let sentence = _(fillintheblanks)
+    const sentence = _(fillintheblanks)
         .get([0, 'sentence.sentence'])
         .split(' ')
-        .map(word => {
-            return { word: word }
+
+    const blanks = _(fillintheblanks)
+        .keyBy('index')
+        .mapValues(blank => {
+            return _.get(blank, 'answer.particle')
         })
+        .value()
 
-    _.each(fillintheblanks, blank => {
-        delete sentence[blank.index].word
-        sentence[blank.index].isBlank = true
-    })
-
-    return { sentence: sentence, blanks: fillintheblanks }
+    return { sentence: sentence, blanks: blanks }
 }

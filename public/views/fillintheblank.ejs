@@ -4,25 +4,27 @@
     <body>
         <% include partials/nav %>
         <div class="section question">
-            <div class="container question__sentence">
-                <% question.sentence.forEach(function(word) { %>
-                <span class="word <%= word.isBlank ? 'word--blank' : '' %>">
-                    <%= word.word %>
-                </span>
-                <% }) %>
-            </div>
-            <div class="container question__answers">
+            <div class="container">
                 <form method="post" name="question-blank-answers">
-                    <% question.blanks.forEach(function(blank, index) { %>
-                    <%= index %> - <%= blank.index +  ' ' + blank['answer.particle'] %><br/>
-                    <div class="control">
-                        <% particles.forEach(function(particle) { %>
-                        <label class="radio">
-                            <input type="radio" name="<%= index %>" value="<%= particle %>" <%= previousAnswers[index] === particle ? 'checked' : '' %>>
-                            <%= particle %>
-                        </label>
-                        <% }) %>
+                    <% question.sentence.forEach(function(word, index) { %>
+                    <% if (question.blanks[index]) { %>
+                    <div class="control is-inline-block word word--blank">
+                        <div class="select is-info">
+                            <select name="<%= 'question-answer-' + index %>">
+                                <option selected value></option>
+                                <% particles.forEach(function(particle) { %>
+                                <option value="<%= particle %>" <%- userAnswers['question-answer-' + index] === particle ? 'selected' : '' %>>
+                                <%= particle %>
+                                </option>
+                                <% }) %>
+                            </select>
+                        </div>
                     </div>
+                    <% } else { %>
+                    <div class="word is-inline">
+                        <%= word %>
+                    </div>
+                    <% } %>
                     <% }) %>
                     <input type="submit">
                 </form>

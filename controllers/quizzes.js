@@ -61,18 +61,18 @@ exports.fillintheblank = function (req, res, next) {
     const sentenceId = _.get(req, 'params.sentenceId')
     const particles = _.get(req, 'query.p')
 
-    const previousAnswers = _.get(res, 'locals.previousAnswers', {})
+    const userAnswers = _.get(res, 'locals.userAnswers', {})
 
     FillInTheBlank.getFillInTheBlankQuestion(sentenceId, particles).then(question => {
         res.render('fillintheblank', {
             particles: particles,
             question: question,
-            previousAnswers: previousAnswers
+            userAnswers: userAnswers
         })
     })
 }
 
 exports.checkFillInTheBlankAnswer = function (req, res, next) {
-    _.set(res.locals, 'previousAnswers', req.body)
+    _.set(res.locals, 'userAnswers', req.body)
     next()
 }
