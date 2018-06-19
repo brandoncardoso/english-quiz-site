@@ -7,8 +7,15 @@ const instream = fs.createReadStream (process.argv[2])
 const outstream = new stream()
 const rl = readline.createInterface(instream, outstream)
 
+const async = require('async')
+const inserter = async.cargo(function(tasks, callback) {
+    Sentence.bulkCreate(tasks).then(() => {
+        callback()
+    })
+}, 1000)
+
 rl.on('line', function (line) {
-    Sentence.create({ sentence: line })
+    inserter.push({ sentence: line })
 })
 
 rl.on('close', function (line) {

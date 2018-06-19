@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include partials/head %>
+    <body>
+        <% include partials/nav %>
+        <div class="section">
+            <div class="container">
+                <p class="title">Sign up</p>
+                <form method="post" id="sign-up-form">
+                    <div class="field">
+                        <label class="label">Username*
+                            <% if (typeof usernameTaken !== 'undefined' && usernameTaken) { %>
+                            <span class="has-text-danger has-text-weight-semibold">already in use</span>
+                            <% } %>
+                        </label>
+                        <div class="control">
+                            <input class="input" type="text" name="username" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Email Address
+                            <% if (typeof emailInUse !== 'undefined' && emailInUse) { %>
+                            <span class="has-text-danger has-text-weight-semibold">already registered</span>
+                            <% } %>
+                            <% if (typeof invalidEmail !== 'undefined' && invalidEmail) { %>
+                            <span class="has-text-danger has-text-weight-semibold">invalid email</span>
+                            <% } %>
+                        </label>
+                        <div class="control">
+                            <input class="input" type="email" name="useremail">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Password*
+                            <% if (typeof passwordCheckLength !== 'undefined' && passwordCheckLength) { %>
+                            <span class="has-text-danger has-text-weight-semibold">check length</span>
+                            <% } %>
+                        </label>
+                        <div class="control">
+                            <input class="input" type="password" name="userpassword" required>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary" type="submit">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+

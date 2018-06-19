@@ -11,6 +11,8 @@
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
+    "async": "^2.6.1",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
