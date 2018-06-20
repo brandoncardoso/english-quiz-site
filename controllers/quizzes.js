@@ -12,7 +12,7 @@ let quizList = [
         particles: ['the', 'a', 'an']
     },
     {
-        name: 'In, At, &, On',
+        name: 'In, At, & On',
         particles: ['in', 'at', 'on']
     },
     {
