@@ -56,3 +56,11 @@ a.is-quiz-button {
 .question__buttons button {
     width: 10em;
 }
+
+@media screen and (max-width: 1087px) {
+    .navbar-menu .navbar-end {
+        border-top: 0.1em solid $light;
+        margin-top: 0.5em;
+        padding-top: 0.5em;
+    }
+}
