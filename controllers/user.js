@@ -1,7 +1,37 @@
 const _ = require('lodash')
 const Sequelize = require('sequelize')
 
-const User = require('../models/User').User
+const User = require('../models/User')
+
+exports.login = function (req, res) {
+    res.render('login')
+}
+
+exports.logout = function (req, res) {
+    if (req.session) {
+        // delete session object
+        req.session.destroy(err => {
+            res.redirect('/')
+        })
+    }
+}
+
+exports.authenticate = function (req, res, next) {
+    User.authenticate(_.get(req, 'body.username'), _.get(req, 'body.userpassword'))
+        .then(userId => {
+            _.set(req.session, 'userId', userId)
+            res.redirect('/')
+        })
+        .catch(err => {
+            console.error(err)
+            if (err.code === 'USER_NOT_FOUND') {
+                _.set(res.locals, 'userNotFound', true)
+            } else if (err.code === 'WRONG_PW') {
+                _.set(res.locals, 'wrongPassword', true)
+            }
+            next()
+        })
+}
 
 exports.register = function (req, res) {
     res.render('signup')
@@ -10,7 +40,7 @@ exports.register = function (req, res) {
 exports.registerUser = function (req, res, next) {
     const email =  _.get(req, 'body.useremail')
 
-    User.create({
+    User.User.create({
         username: _.get(req, 'body.username'),
         email: _.size(email) > 0 ? email : null,
         password: _.get(req, 'body.userpassword')
@@ -18,6 +48,7 @@ exports.registerUser = function (req, res, next) {
         raw: true
     })
         .then(user => {
+            _.set(req.session, 'userId', user.id)
             res.redirect('/')
         })
         .catch(Sequelize.ValidationError, err => {

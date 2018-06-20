@@ -60,26 +60,31 @@ User.beforeUpdate(encryptPasswordIfChanged)
 User.sync().then(() => console.log('User table synced'))
 
 // functions
-
-exports.authenticate = function(username, password, next) {
-    User.findOne({ username: username })
-    .exec((err, user) => {
-        if (err) {
-            return next(err)
-        } else if (!user) {
-            let err = new Error('User not found.')
-            err.status = 401
-            return next(err)
-        }
-
-        bcrypt.compare(password, user.password, (err, samePassword) => {
-            if (samePassword) {
-                return next(null, user)
-            } else {
-                return callback()
-            }
-        })
+exports.authenticate = function(username, password) {
+    return User.findOne({
+        where: { username: username },
+        attributes: ['id', 'password']
+    }, {
+        raw: true
     })
+        .then(user => {
+            if (!user) {
+                let err = new Error("User not found.")
+                err.code = "USER_NOT_FOUND"
+                throw err
+            }
+
+            return [user.id, bcrypt.compare(password, user.password)]
+        })
+        .spread((userId, samePassword) => {
+            if (!samePassword) {
+                let err = new Error('Wrong password.')
+                err.code = "WRONG_PW"
+                throw err
+            }
+
+            return userId
+        })
 }
 
 function encryptPasswordIfChanged(user, options) {
@@ -90,7 +95,7 @@ function encryptPasswordIfChanged(user, options) {
             })
             .then(err => {
                 if (err) {
-                    console.log(err)
+                    console.error(err)
                 }
             })
     }
