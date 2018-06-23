@@ -16,6 +16,19 @@ exports.logout = function (req, res) {
     }
 }
 
+exports.profile = function (req, res) {
+    User.User.findOne({
+        where: { username: _.get(req, 'params.username' ) },
+    }, {
+        raw: true
+    })
+    .then(user => {
+        res.render('profile', {
+            user
+        })
+    })
+}
+
 exports.authenticate = function (req, res, next) {
     User.authenticate(_.get(req, 'body.username'), _.get(req, 'body.userpassword'))
         .then(userId => {

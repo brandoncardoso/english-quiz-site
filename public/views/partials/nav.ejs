@@ -17,7 +17,7 @@
         </div>
         <div class="navbar-end">
             <% if (typeof user !== 'undefined' && user) { %>
-            <a class="navbar-item is-white">
+            <a class="navbar-item is-white" href="/user/profile/<%= user.username %>">
                 <%= user.username %>
             <a>
             <a class="navbar-item is-white" href="/user/logout">

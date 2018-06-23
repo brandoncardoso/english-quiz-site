@@ -27,8 +27,8 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(session({
     secret: 'mwSlzMW7K9uQdQgQrUg1vqkN0W6bAPGMs4kyDpogndGjmIGbB6',
-    resave: true,
-    saveUninitialized: false
+    resave: false,
+    saveUninitialized: true
 }))
 app.use(middleware.user)
 
