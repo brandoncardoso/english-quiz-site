@@ -48,6 +48,16 @@ exports.getBySentenceId = function (sentenceId) {
     })
 }
 
+exports.getBySentenceIdAndIndex = function (sentenceId, index) {
+    return FillInTheBlank.findOne({
+        where: {
+            sentenceId: { [Op.eq]: sentenceId },
+            index: { [Op.eq]: index }
+        },
+        raw: true
+    })
+}
+
 exports.getFillInTheBlankQuestion = function (sentenceId, particles) {
     return FillInTheBlank.findAll({
         include: [{

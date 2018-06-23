@@ -3,6 +3,8 @@ const qs = require('querystring')
 
 const Sentence = require('../models/Sentence')
 const FillInTheBlank = require('../models/FillInTheBlank')
+const Particle = require('../models/Particle')
+const UserAnswer = require('../models/UserAnswer')
 
 const numColumns = 3
 
@@ -49,7 +51,7 @@ exports.getFillInTheBlank = function (req, res) {
             res.redirect(req.baseUrl  + '/fillintheblank/' + fillintheblank.sentenceId + '?' + qs.stringify({ p: particles }))
         } else {
             res.render('quizzes', {
-                quizList: quizList,
+                quizList,
                 invalidQuiz: true,
                 invalidParticles: particles
             })
@@ -65,9 +67,9 @@ exports.fillintheblank = function (req, res, next) {
 
     FillInTheBlank.getFillInTheBlankQuestion(sentenceId, particles).then(question => {
         res.render('fillintheblank', {
-            particles: particles,
-            question: question,
-            userAnswers: userAnswers,
+            particles,
+            question,
+            userAnswers,
             answered: _.size(userAnswers) > 0,
             nextQuestionUrl: req.baseUrl + '/fillintheblank?' + qs.stringify({ p: particles })
         })
@@ -76,5 +78,28 @@ exports.fillintheblank = function (req, res, next) {
 
 exports.checkFillInTheBlankAnswer = function (req, res, next) {
     _.set(res.locals, 'userAnswers', req.body)
+    saveUserAnswers(_.get(req, 'session.userId'),
+        _.get(req, 'params.sentenceId'),
+        req.body)
     next()
+}
+
+function saveUserAnswers(userId, sentenceId, answers) {
+    let ans = _.mapKeys(answers,
+        (value, key) => _.replace(key, 'userAnswer-', ''))
+
+    _.forEach(ans, (answer, index) => {
+        FillInTheBlank.getBySentenceIdAndIndex(sentenceId, index)
+            .then(fitb => {
+                return [fitb, Particle.getByParticle(answer)]
+            })
+            .spread((fitb, particle) => {
+                UserAnswer.UserAnswer.create({
+                    userId: userId,
+                    fillintheblankId: fitb.id,
+                    particleId: particle.id,
+                    correct: fitb.answerId == particle.id
+                })
+            })
+    })
 }

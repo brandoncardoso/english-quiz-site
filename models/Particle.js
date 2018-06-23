@@ -19,3 +19,9 @@ const Particle = exports.Particle = dbs.language.define('particle', {
 Particle.sync().then(() => console.log('Particle table synced'))
 
 // functions
+exports.getByParticle = function (particle) {
+    return Particle.findOne({
+        where: { particle: particle },
+        raw: true
+    })
+}
