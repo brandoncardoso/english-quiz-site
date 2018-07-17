@@ -17,11 +17,7 @@ exports.logout = function (req, res) {
 }
 
 exports.profile = function (req, res) {
-    User.User.findOne({
-        where: { username: _.get(req, 'params.username' ) },
-    }, {
-        raw: true
-    })
+    User.findOneByUsername(_.get(req, 'params.username' ))
     .then(user => {
         res.render('profile', {
             user

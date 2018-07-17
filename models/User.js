@@ -60,6 +60,17 @@ User.beforeUpdate(encryptPasswordIfChanged)
 User.sync().then(() => console.log('User table synced'))
 
 // functions
+exports.findOneByUsername = function (username) {
+    return User.findOne({
+        where: { username: username },
+        attributes: {
+            exclude: ['password']
+        }
+    }, {
+        raw: true
+    })
+}
+
 exports.authenticate = function(username, password) {
     return User.findOne({
         where: { username: username },
