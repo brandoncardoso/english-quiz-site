@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const Sequelize = require('sequelize')
 const dbs = require('../app/dbs')
 
@@ -33,3 +34,40 @@ UserAnswer.sync().then(() => console.log('UserAnswers table synced'))
 
 // functions
 
+exports.getStats = function(userId) {
+    return Promise.all([
+        getTotalBlanksAnsweredForUser(userId),
+        getTotalBlanksCorrectForUser(userId)
+    ])
+    .then(stats => {
+        var retVal = stats
+        retVal = _(stats)
+            .keyBy(stat => stat.name)
+            .mapValues(stat => stat.value)
+            .value()
+        console.log(retVal)
+        return retVal
+    })
+}
+
+function getTotalBlanksAnsweredForUser(userId) {
+    return UserAnswer.findAndCountAll({
+        where: { userId: userId },
+    }, {
+        raw: true
+    })
+    .then(value => {
+        return { name: 'totalBlanksAnsweredForUser', value: value.count }
+    })
+}
+
+function getTotalBlanksCorrectForUser(userId) {
+    return UserAnswer.findAndCountAll({
+        where: { userId: userId, correct: 1 }
+    }, {
+        raw: true
+    })
+    .then(value => {
+        return { name: 'totalBlanksCorrectForUser', value: value.count }
+    })
+}

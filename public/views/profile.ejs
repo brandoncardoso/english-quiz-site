@@ -8,6 +8,28 @@
                 <p class="title"><%= user.username %></p>
                 <p class="subtitle">User since <%= user.created.toDateString() %></p>
             </div>
+            <div class="container" style="margin-top: 4em">
+                <nav class="level">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Blanks Filled</p>
+                            <p class="title"><%= stats.totalBlanksAnsweredForUser %></p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Blanks Correct</p>
+                            <p class="title"><%= stats.totalBlanksCorrectForUser %></p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Correct Pct.</p>
+                            <p class="title"><%= ((stats.totalBlanksCorrectForUser / stats.totalBlanksAnsweredForUser) * 100).toFixed(2) + '%' %></p>
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
     </body>
 </html>

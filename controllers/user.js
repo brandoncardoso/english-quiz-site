@@ -2,6 +2,7 @@ const _ = require('lodash')
 const Sequelize = require('sequelize')
 
 const User = require('../models/User')
+const UserAnswer = require('../models/UserAnswer')
 
 exports.login = function (req, res) {
     res.render('login')
@@ -19,8 +20,12 @@ exports.logout = function (req, res) {
 exports.profile = function (req, res) {
     User.findOneByUsername(_.get(req, 'params.username' ))
     .then(user => {
+        return [user, UserAnswer.getStats(user.id)]
+    })
+    .spread((user, stats) => {
         res.render('profile', {
-            user
+            user,
+            stats
         })
     })
 }
