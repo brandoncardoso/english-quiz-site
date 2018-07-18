@@ -15,6 +15,11 @@ const UserAnswer = exports.UserAnswer = dbs.language.define('user_answer', {
     correct: {
         type: Sequelize.BOOLEAN,
         allowNull: false
+    },
+    timestamp: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.NOW
     }
 })
 

@@ -95,7 +95,7 @@ function saveUserAnswers(userId, sentenceId, answers) {
             })
             .spread((fitb, particle) => {
                 UserAnswer.UserAnswer.create({
-                    userId: userId,
+                    userId,
                     fillintheblankId: fitb.id,
                     particleId: particle.id,
                     correct: fitb.answerId == particle.id
