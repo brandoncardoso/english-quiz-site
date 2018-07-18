@@ -10,15 +10,15 @@ const numColumns = 3
 
 let quizList = [
     {
-        name: 'The, A, & An',
+        name: 'The, A & An',
         particles: ['the', 'a', 'an']
     },
     {
-        name: 'In, At, & On',
+        name: 'In, At & On',
         particles: ['in', 'at', 'on']
     },
     {
-        name: 'And, & But',
+        name: 'And & But',
         particles: ['and', 'but']
     }
 ]
