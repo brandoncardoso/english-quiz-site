@@ -40,13 +40,10 @@ exports.getStats = function(userId) {
         getTotalBlanksCorrectForUser(userId)
     ])
     .then(stats => {
-        var retVal = stats
-        retVal = _(stats)
+        return _(stats)
             .keyBy(stat => stat.name)
             .mapValues(stat => stat.value)
             .value()
-        console.log(retVal)
-        return retVal
     })
 }
 
